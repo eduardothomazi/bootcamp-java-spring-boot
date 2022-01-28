@@ -3,6 +3,7 @@ package com.eduardothomazi.dscatalog.services;
 
 import com.eduardothomazi.dscatalog.dto.CategoryDTO;
 import com.eduardothomazi.dscatalog.dto.ProductDTO;
+import com.eduardothomazi.dscatalog.entities.Category;
 import com.eduardothomazi.dscatalog.entities.Product;
 import com.eduardothomazi.dscatalog.repositories.ProductRepository;
 import com.eduardothomazi.dscatalog.services.exceptions.DataBaseException;
@@ -17,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class ProductService {
@@ -41,10 +43,10 @@ public class ProductService {
 
     @Transactional
     public ProductDTO insert(ProductDTO dto){
-        Product product = new Product();
-        product.setName(dto.getName());
+        Product product = new Product(dto);
+        Set<Category> cat = product.getCategories();//only to return on requisition body
         repository.save(product);
-        return new ProductDTO(product);
+        return new ProductDTO(product, cat);//returns categories set
     }
 
     @Transactional

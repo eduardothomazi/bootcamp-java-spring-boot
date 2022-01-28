@@ -1,6 +1,8 @@
 package com.eduardothomazi.dscatalog.entities;
 
 
+import com.eduardothomazi.dscatalog.dto.ProductDTO;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.Instant;
@@ -43,6 +45,15 @@ public class Product implements Serializable {
         this.price = price;
         this.imgUrl = imgUrl;
         this.date = date;
+    }
+
+    public Product(ProductDTO dto) {
+        this.name = dto.getName();
+        this.description = dto.getDescription();
+        this.price = dto.getPrice();
+        this.imgUrl = dto.getImgUrl();
+        this.date = dto.getDate();
+        dto.getCategories().forEach(x -> this.categories.add(new Category(x)));
     }
 
     public Long getId() {
